@@ -20,3 +20,13 @@ export interface ExperienceData {
   period: string
   responsibilities: string[]
 }
+
+export interface EducationData {
+  id: string
+  degree: string
+  institution: string
+  period: string
+  honors?: string
+  coursework?: string
+  awards?: string[]
+}

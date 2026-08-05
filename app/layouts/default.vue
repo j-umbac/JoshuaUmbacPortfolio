@@ -6,6 +6,8 @@ import type { NavItem } from '~/types'
 const navItems = ref<NavItem[]>([
   { label: 'Work', href: '#work' },
   { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Education', href: '#education' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' }
 ])
