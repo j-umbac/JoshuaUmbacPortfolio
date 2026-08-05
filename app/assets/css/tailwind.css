@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%; /* bg color in hsl */
+    --foreground: 0 0% 96%; /* text color in hsl */
+    --surface: 0 0% 8%; /* surface color in hsl */
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-bg text-text font-sans antialiased selection:bg-primary selection:text-primary-foreground;
+  }
+
+  /* Custom Instrument Serif for display classes */
+  .font-display {
+    font-style: italic;
+  }
+}
+
+@layer utilities {
+  .cosmic-halftone {
+    background-image: radial-gradient(circle at center, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+}
