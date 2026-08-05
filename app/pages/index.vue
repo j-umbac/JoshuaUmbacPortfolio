@@ -4,7 +4,7 @@ import BentoCard from '~/components/BentoCard.vue'
 import Button from '~/components/ui/Button.vue'
 import StatusIndicator from '~/components/StatusIndicator.vue'
 import LoadingCounter from '~/components/LoadingCounter.vue'
-import type { ProjectData, ExperienceData, EducationData } from '~/types'
+import { usePortfolio } from '~/composables/usePortfolio'
 
 const isLoaded = ref(false)
 
@@ -12,87 +12,7 @@ const handleLoadingComplete = () => {
   isLoaded.value = true
 }
 
-const projects = ref<ProjectData[]>([
-  {
-    id: '1',
-    title: 'Cosmic Dark',
-    description: 'A cinematic design system for high-end digital experiences.',
-    tags: ['Design System', 'Nuxt', 'Tailwind']
-  },
-  {
-    id: '2',
-    title: 'Nexus Platform',
-    description: 'Next-generation data visualization and analytics dashboard.',
-    tags: ['Vue 3', 'D3.js']
-  },
-  {
-    id: '3',
-    title: 'Starlight CLI',
-    description: 'A blazing fast command line tool for scaffolded projects.',
-    tags: ['Go', 'CLI']
-  }
-])
-
-const experiences = ref<ExperienceData[]>([
-  {
-    id: '1',
-    role: 'Lead Full Stack Developer',
-    company: 'Multiplai Tech / GoTeam',
-    location: 'Cebu, PH',
-    period: 'Aug 2023 — Present',
-    responsibilities: [
-      'Collaborated with cross-functional teams to pioneer Multiplai Interviews, reducing hiring time by 50% and costs by 75%.',
-      'Engineered robust data architecture using Laravel and MySQL for real-time analytics on thousands of applicant records.',
-      'Built and maintained dynamic analytics dashboards using a robust Vue3/TypeScript frontend.',
-      'Analyzed and synthesized raw candidate data to uncover trends and provide strategic insights.'
-    ]
-  },
-  {
-    id: '2',
-    role: 'Software Developer',
-    company: 'Miller Development',
-    location: 'Dumaguete, PH',
-    period: 'Aug 2022 — Jun 2023',
-    responsibilities: [
-      'Designed and developed an AI-powered internal knowledge-sharing platform using Nuxt, TypeScript, and Supabase.',
-      'Executed system modernizations and frontend overhauls using Vue, Magento, and PHP.',
-      'Operated within Agile/Scrum environments utilizing Git and Jira.'
-    ]
-  },
-  {
-    id: '3',
-    role: 'Software Developer Trainee',
-    company: 'Miller Development',
-    location: 'Dumaguete, PH',
-    period: 'May 2022 — Jun 2022',
-    responsibilities: [
-      'Designed and implemented websites with Vue3 and TypeScript.',
-      'Practiced backend functionality and API using Python and MySQL.'
-    ]
-  }
-])
-
-const skills = {
-  languages: ['TypeScript', 'PHP', 'JavaScript', 'C++', 'SQL', 'HTML', 'CSS', 'Python'],
-  frameworks: ['Vue', 'Laravel', 'Nuxt', '.NET', 'React', 'Tailwind', 'n8n'],
-  tools: ['Docker', 'Git', 'Jira', 'AWS', 'WSL', 'Vapor', 'Firebase', 'Figma', 'Cursor', 'Claude Code', 'AI Automation']
-}
-
-const education = ref<EducationData[]>([
-  {
-    id: '1',
-    degree: 'Bachelor of Science in Computer Engineering',
-    institution: 'Silliman University',
-    period: 'June 2022',
-    honors: 'QPA: 3.47, Cum Laude',
-    coursework: 'Data Structures and Algorithms, OOP, System Administration, Embedded Systems',
-    awards: [
-      'Class Honor, Silliman University (2018 — 2021)',
-      'College Honor, Silliman University (2022)',
-      'Academic Scholarship, Silliman University (2018 — 2022)'
-    ]
-  }
-])
+const { projects, experiences, skills, education } = usePortfolio()
 </script>
 
 <template>
@@ -118,34 +38,11 @@ const education = ref<EducationData[]>([
           </p>
           <div class="flex items-center space-x-4 pt-4">
             <Button variant="primary" href="#work">Explore Work</Button>
-            <Button variant="secondary" href="mailto:hello@example.com">Get in Touch</Button>
+            <Button variant="secondary" href="mailto:joshuarheyumbac14@gmail.com">Get in Touch</Button>
           </div>
         </div>
       </section>
-            <!-- Experience Section -->
-      <section id="experience" class="py-section-v-padding scroll-mt-24">
-        <h2 class="font-sans text-headline-section mb-12">Experience</h2>
-        
-        <div class="flex flex-col gap-bento-gap">
-          <BentoCard v-for="exp in experiences" :key="exp.id" class="w-full">
-            <div class="flex flex-col md:flex-row md:items-start justify-between mb-6">
-              <div>
-                <h3 class="font-display text-3xl mb-1">{{ exp.role }}</h3>
-                <p class="text-primary font-medium">{{ exp.company }} <span class="text-muted font-normal ml-2">{{ exp.location }}</span></p>
-              </div>
-              <div class="mt-2 md:mt-0">
-                <span class="text-sm font-medium px-3 py-1 rounded-pill bg-surface-bright text-on-surface">{{ exp.period }}</span>
-              </div>
-            </div>
-            
-            <ul class="list-disc list-outside ml-5 space-y-2 text-muted text-body-md">
-              <li v-for="(resp, index) in exp.responsibilities" :key="index">
-                {{ resp }}
-              </li>
-            </ul>
-          </BentoCard>
-        </div>
-      </section>
+
       <!-- Featured Work (Bento Grid) -->
       <section id="work" class="py-section-v-padding scroll-mt-24">
         <h2 class="font-sans text-headline-section mb-12">Selected Works</h2>
@@ -189,7 +86,32 @@ const education = ref<EducationData[]>([
           </BentoCard>
         </div>
       </section>
-      
+
+      <!-- Experience Section -->
+      <section id="experience" class="py-section-v-padding scroll-mt-24">
+        <h2 class="font-sans text-headline-section mb-12">Experience</h2>
+        
+        <div class="flex flex-col gap-bento-gap">
+          <BentoCard v-for="exp in experiences" :key="exp.id" class="w-full">
+            <div class="flex flex-col md:flex-row md:items-start justify-between mb-6">
+              <div>
+                <h3 class="font-display text-3xl mb-1">{{ exp.role }}</h3>
+                <p class="text-primary font-medium">{{ exp.company }} <span class="text-muted font-normal ml-2">{{ exp.location }}</span></p>
+              </div>
+              <div class="mt-2 md:mt-0">
+                <span class="text-sm font-medium px-3 py-1 rounded-pill bg-surface-bright text-on-surface">{{ exp.period }}</span>
+              </div>
+            </div>
+            
+            <ul class="list-disc list-outside ml-5 space-y-2 text-muted text-body-md">
+              <li v-for="(resp, index) in exp.responsibilities" :key="index">
+                {{ resp }}
+              </li>
+            </ul>
+          </BentoCard>
+        </div>
+      </section>
+
       <!-- Technical Skills Section -->
       <section id="skills" class="py-section-v-padding scroll-mt-24">
         <h2 class="font-sans text-headline-section mb-12">Technical Skills</h2>
