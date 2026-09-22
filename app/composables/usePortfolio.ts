@@ -5,15 +5,22 @@ export const usePortfolio = () => {
   const projects = useState<ProjectData[]>('portfolio-projects', () => [
     {
       id: '1',
-      title: 'Cosmic Dark',
-      description: 'A cinematic design system for high-end digital experiences.',
-      tags: ['Design System', 'Nuxt', 'Tailwind']
+      title: 'Interviewroom AI',
+      description: 'AI-Powered Interviews to cut hiring costs and accelerate time-to-hire. A proprietary recruitment software platform for talent leaders.',
+      tags: ['Vue 3', 'Laravel', 'AI', 'SaaS'],
+      images: ['/images/interviewroom-1.png', '/images/interviewroom-2.png'],
+      link: 'https://interviewroom.ai/',
+      demo: 'https://multiplai.storylane.io/demo/nn9g0gm7ualq',
+      status: 'Proprietary Tool'
     },
     {
       id: '2',
-      title: 'Nexus Platform',
-      description: 'Next-generation data visualization and analytics dashboard.',
-      tags: ['Vue 3', 'D3.js']
+      title: 'PhotoDump',
+      description: 'The cleanest way to collect high-res media from your community, guests, or team. Straight to your storage, no compression, no account required.',
+      tags: ['Nuxt', 'TypeScript', 'Tailwind', 'Firebase'],
+      images: ['/images/photodump-1.png', '/images/photodump-2.png'],
+      link: 'https://photodump-app--photodump-4d917.asia-southeast1.hosted.app/',
+      github: 'https://github.com/j-umbac/photodump-app'
     },
     {
       id: '3',
