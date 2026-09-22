@@ -4,12 +4,35 @@ import BentoCard from '~/components/BentoCard.vue'
 import Button from '~/components/ui/Button.vue'
 import StatusIndicator from '~/components/StatusIndicator.vue'
 import LoadingCounter from '~/components/LoadingCounter.vue'
+import DemoModal from '~/components/DemoModal.vue'
+import ImageCarousel from '~/components/ImageCarousel.vue'
+import GalleryModal from '~/components/GalleryModal.vue'
+import type { ProjectData, ExperienceData, EducationData } from '~/types'
 import { usePortfolio } from '~/composables/usePortfolio'
 
 const isLoaded = ref(false)
+const isDemoOpen = ref(false)
+const activeDemoUrl = ref('')
+
+// Gallery state
+const isGalleryOpen = ref(false)
+const activeGalleryImages = ref<string[]>([])
+const activeGalleryIndex = ref(0)
+
+const openGallery = (images: string[], index: number) => {
+  if (!images || images.length === 0) return
+  activeGalleryImages.value = images
+  activeGalleryIndex.value = index
+  isGalleryOpen.value = true
+}
 
 const handleLoadingComplete = () => {
   isLoaded.value = true
+}
+
+const openDemo = (url: string) => {
+  activeDemoUrl.value = url
+  isDemoOpen.value = true
 }
 
 const { projects, experiences, skills, education } = usePortfolio()
@@ -47,41 +70,55 @@ const { projects, experiences, skills, education } = usePortfolio()
       <section id="work" class="py-section-v-padding scroll-mt-24">
         <h2 class="font-sans text-headline-section mb-12">Selected Works</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
-          <!-- Main featured item spans 2 columns on desktop -->
-          <BentoCard class="md:col-span-2 lg:col-span-2 min-h-[400px]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-bento-gap">
+          <!-- Project 1: Interviewroom AI -->
+          <BentoCard class="min-h-[500px]" @click="projects[0]?.link && window.open(projects[0].link, '_blank')">
+            <div class="mb-6 relative w-full h-64 rounded-xl overflow-hidden border border-stroke bg-surface-dim">
+              <ImageCarousel v-if="projects[0]?.images" :images="projects[0].images" alt-text="Interviewroom AI Screenshot" @open-gallery="openGallery(projects[0].images, $event)" />
+            </div>
             <div class="mt-auto">
-              <div class="flex flex-wrap gap-2 mb-4">
+              <div class="flex flex-wrap items-center gap-2 mb-4">
                 <span v-for="tag in projects[0]?.tags" :key="tag" class="text-xs font-medium px-3 py-1 rounded-pill bg-surface-bright text-on-surface">
                   {{ tag }}
                 </span>
+                <span v-if="projects[0]?.status" class="text-xs font-medium px-3 py-1 rounded-pill bg-accent-gradient text-primary-foreground">
+                  {{ projects[0].status }}
+                </span>
               </div>
               <h3 class="font-display text-4xl mb-2">{{ projects[0]?.title }}</h3>
-              <p class="text-muted">{{ projects[0]?.description }}</p>
+              <p class="text-muted mb-4">{{ projects[0]?.description }}</p>
+              <div class="flex gap-4">
+                <a :href="projects[0]?.link" target="_blank" @click.stop class="text-primary hover:text-white transition-colors text-sm font-semibold flex items-center">
+                  Live Site &rarr;
+                </a>
+                <button v-if="projects[0]?.demo" @click.stop="openDemo(projects[0].demo!)" class="text-primary hover:text-white transition-colors text-sm font-semibold flex items-center">
+                  Storylane Demo &rarr;
+                </button>
+              </div>
             </div>
           </BentoCard>
 
-          <BentoCard class="min-h-[400px]">
+          <!-- Project 2: PhotoDump -->
+          <BentoCard class="min-h-[500px]" @click="projects[1]?.link && window.open(projects[1].link, '_blank')">
+            <div class="mb-6 relative w-full h-64 rounded-xl overflow-hidden border border-stroke bg-surface-dim">
+              <ImageCarousel v-if="projects[1]?.images" :images="projects[1].images" alt-text="PhotoDump Screenshot" @open-gallery="openGallery(projects[1].images, $event)" />
+            </div>
             <div class="mt-auto">
-              <div class="flex flex-wrap gap-2 mb-4">
+              <div class="flex flex-wrap items-center gap-2 mb-4">
                 <span v-for="tag in projects[1]?.tags" :key="tag" class="text-xs font-medium px-3 py-1 rounded-pill bg-surface-bright text-on-surface">
                   {{ tag }}
                 </span>
               </div>
-              <h3 class="font-display text-3xl mb-2">{{ projects[1]?.title }}</h3>
-              <p class="text-muted">{{ projects[1]?.description }}</p>
-            </div>
-          </BentoCard>
-
-          <BentoCard class="md:col-span-2 lg:col-span-3 min-h-[300px]">
-            <div class="mt-auto">
-              <div class="flex flex-wrap gap-2 mb-4">
-                <span v-for="tag in projects[2]?.tags" :key="tag" class="text-xs font-medium px-3 py-1 rounded-pill bg-surface-bright text-on-surface">
-                  {{ tag }}
-                </span>
+              <h3 class="font-display text-4xl mb-2">{{ projects[1]?.title }}</h3>
+              <p class="text-muted mb-4">{{ projects[1]?.description }}</p>
+              <div class="flex gap-4">
+                <a :href="projects[1]?.link" target="_blank" @click.stop class="text-primary hover:text-white transition-colors text-sm font-semibold flex items-center">
+                  Live Site &rarr;
+                </a>
+                <a v-if="projects[1]?.github" :href="projects[1].github" target="_blank" @click.stop class="text-primary hover:text-white transition-colors text-sm font-semibold flex items-center">
+                  GitHub &rarr;
+                </a>
               </div>
-              <h3 class="font-display text-3xl mb-2">{{ projects[2]?.title }}</h3>
-              <p class="text-muted">{{ projects[2]?.description }}</p>
             </div>
           </BentoCard>
         </div>
@@ -179,5 +216,15 @@ const { projects, experiences, skills, education } = usePortfolio()
         </div>
       </section>
     </div>
+
+    <!-- Demo Modal -->
+    <DemoModal v-model="isDemoOpen" :url="activeDemoUrl" />
+    
+    <!-- Image Gallery Modal -->
+    <GalleryModal 
+      v-model="isGalleryOpen" 
+      :images="activeGalleryImages" 
+      :initial-index="activeGalleryIndex" 
+    />
   </div>
 </template>

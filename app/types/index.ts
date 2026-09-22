@@ -9,7 +9,11 @@ export interface ProjectData {
   description: string
   tags: string[]
   imageUrl?: string
+  images?: string[] // Multiple images
   link?: string
+  github?: string
+  demo?: string
+  status?: string
 }
 
 export interface ExperienceData {
