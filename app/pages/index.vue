@@ -7,8 +7,16 @@ import LoadingCounter from '~/components/LoadingCounter.vue'
 import DemoModal from '~/components/DemoModal.vue'
 import ImageCarousel from '~/components/ImageCarousel.vue'
 import GalleryModal from '~/components/GalleryModal.vue'
+import HeroCarousel from '~/components/HeroCarousel.vue'
 import type { ProjectData, ExperienceData, EducationData } from '~/types'
 import { usePortfolio } from '~/composables/usePortfolio'
+
+definePageMeta({
+  pageTransition: {
+    name: 'wipe',
+    mode: 'out-in'
+  }
+})
 
 const isLoaded = ref(false)
 const isDemoOpen = ref(false)
@@ -41,7 +49,7 @@ const { projects, experiences, skills, education } = usePortfolio()
 <template>
   <div>
     <!-- Initial Loading Sequence -->
-    <LoadingCounter :duration="2000" @complete="handleLoadingComplete" />
+    <LoadingCounter :duration="1" @complete="handleLoadingComplete" />
 
     <!-- Main Content -->
     <div 
@@ -49,8 +57,11 @@ const { projects, experiences, skills, education } = usePortfolio()
       :class="isLoaded ? 'opacity-100' : 'opacity-0'"
     >
       <!-- Hero Section -->
-      <section class="min-h-[80vh] flex flex-col justify-center py-section-v-padding">
-        <div class="space-y-6 max-w-4xl">
+      <section class="min-h-[80vh] flex flex-col justify-center py-section-v-padding relative">
+        <!-- Animated Background Carousel -->
+        <HeroCarousel />
+        
+        <div class="space-y-6 max-w-4xl relative z-10">
           <StatusIndicator text="Available for new projects" />
           <h1 class="font-display text-xl text-text">
             Crafting digital <br />
@@ -63,6 +74,21 @@ const { projects, experiences, skills, education } = usePortfolio()
             <Button variant="primary" href="#work">Explore Work</Button>
             <Button variant="secondary" href="mailto:joshuarheyumbac14@gmail.com">Get in Touch</Button>
           </div>
+        </div>
+
+        <!-- Creative Work side navigation -->
+        <div class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 items-center z-10">
+          <NuxtLink to="/creative" class="group relative flex items-center gap-6 text-muted hover:text-white transition-all duration-500 hover:translate-x-2 p-4">
+            <!-- Encapsulating Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/3 -translate-y-1/2 w-[50dvw] h-[100dvh] bg-white/10 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-10"></div>
+            
+            <div class="font-display text-3xl tracking-wide relative z-10">
+              Creative Work
+            </div>
+            <div class="relative z-10 w-16 h-16 rounded-full border border-stroke flex items-center justify-center transition-all duration-500 group-hover:border-transparent group-hover:bg-white group-hover:text-black">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-500"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </NuxtLink>
         </div>
       </section>
 
