@@ -11,6 +11,10 @@ const props = defineProps<{
   activeHref?: string
 }>()
 
+const emit = defineEmits<{
+  (e: 'update:activeHref', href: string): void
+}>()
+
 const activeLink = computed(() => props.activeHref || '/')
 </script>
 
@@ -24,6 +28,7 @@ const activeLink = computed(() => props.activeHref || '/')
             'relative block px-5 py-2 rounded-pill text-sm font-medium transition-all duration-300',
             activeLink === item.href ? 'text-bg' : 'text-muted hover:text-text'
           ]"
+          @click="emit('update:activeHref', item.href)"
         >
           <div v-if="activeLink === item.href" class="absolute inset-0 bg-accent-gradient rounded-pill -z-10 shadow-cosmic-glow"></div>
           {{ item.label }}

@@ -11,6 +11,8 @@ const navItems = ref<NavItem[]>([
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' }
 ])
+
+const activeHref = ref<string>('#work')
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const navItems = ref<NavItem[]>([
     <!-- Global Halftone Overlay for Texture -->
     <div class="fixed inset-0 z-[-1] cosmic-halftone opacity-20 pointer-events-none"></div>
 
-    <NavigationPill :items="navItems" activeHref="#work" />
+    <NavigationPill :items="navItems" :active-href="activeHref" @update:activeHref="activeHref = $event" />
     
     <main>
       <slot />
